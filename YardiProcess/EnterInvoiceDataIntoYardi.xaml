@@ -1,0 +1,809 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="EnterInvoiceDataIntoYardi" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="Payee" Type="InArgument(x:String)" />
+    <x:Property Name="PayeeName" Type="InArgument(x:String)" />
+    <x:Property Name="InvoiceNumber" Type="InArgument(x:String)" />
+    <x:Property Name="InvoiceDate" Type="InArgument(x:String)" />
+    <x:Property Name="InvoiceTotal" Type="InArgument(x:String)" />
+    <x:Property Name="LineTotal" Type="InArgument(x:String)" />
+    <x:Property Name="ServiceDate" Type="InArgument(x:String)" />
+    <x:Property Name="TenantName" Type="InArgument(x:String)" />
+    <x:Property Name="PropertyAddress" Type="InArgument(x:String)" />
+    <x:Property Name="TribecaNumber" Type="InArgument(x:String)" />
+    <x:Property Name="FundingEntity" Type="InArgument(x:String)" />
+    <x:Property Name="TransactionCount" Type="InArgument(x:Int32)" />
+    <x:Property Name="BatchID" Type="InArgument(x:String)" />
+    <x:Property Name="ControlID" Type="InArgument(x:String)" />
+  </x:Members>
+  <sap:VirtualizedContainerService.HintSize>1634,6909</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="17">
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="34">
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Enter Invoice Data" sap:VirtualizedContainerService.HintSize="1614,6809" sap2010:WorkflowViewState.IdRef="Sequence_19">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Boolean" Name="CheckError" />
+      <Variable x:TypeArguments="ui:Image" Name="ErroScreenShot" />
+      <Variable x:TypeArguments="x:String" Name="FinalImagePath" />
+      <Variable x:TypeArguments="x:String" Name="ImageName" />
+      <Variable x:TypeArguments="x:String" Name="Counter" />
+      <Variable x:TypeArguments="ui:Image" Name="SuccessScreenShot" />
+      <Variable x:TypeArguments="x:Boolean" Name="ValidateError" />
+      <Variable x:TypeArguments="x:String" Name="FileFrom" />
+      <Variable x:TypeArguments="x:String" Name="MoveTo" />
+      <Variable x:TypeArguments="x:String" Name="CopyCSVTo" />
+      <Variable x:TypeArguments="x:String" Name="CopyCSVFrom" />
+      <Variable x:TypeArguments="x:String" Name="txtSaveErrorPath" />
+      <Variable x:TypeArguments="x:String" Name="txtSuccessPath" />
+      <Variable x:TypeArguments="x:String" Name="txtValidateErrorPath" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" ClickBeforeTyping="True" DisplayName="Enter Payee" EmptyField="True" sap:VirtualizedContainerService.HintSize="1572,134" sap2010:WorkflowViewState.IdRef="TypeInto_1" SimulateType="True" Text="[Payee]">
+      <ui:TypeInto.Target>
+        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="8811ac2a3140caf8d5a7ff931b36b30c" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl id='PersonId_LookupCode' tag='INPUT' /&gt;">
+          <ui:Target.TimeoutMS>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:Target.TimeoutMS>
+          <ui:Target.WaitForReady>
+            <InArgument x:TypeArguments="ui:WaitForReady" />
+          </ui:Target.WaitForReady>
+        </ui:Target>
+      </ui:TypeInto.Target>
+    </ui:TypeInto>
+    <ui:LogMessage DisplayName="Enter Payee Log Msg" sap:VirtualizedContainerService.HintSize="1572,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Enter Payee:&quot;+System.DateTime.Now.ToString]">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:LogMessage>
+    <Assign sap:VirtualizedContainerService.HintSize="1572,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[Counter]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[System.DateTime.Now.ToString]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign sap:VirtualizedContainerService.HintSize="1572,60" sap2010:WorkflowViewState.IdRef="Assign_6">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[Counter]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[Counter.Substring(Counter.Length-8)]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" ClickBeforeTyping="True" DisplayName="Enter InvoiceNumber" EmptyField="True" sap:VirtualizedContainerService.HintSize="1572,134" sap2010:WorkflowViewState.IdRef="TypeInto_2" SimulateType="True" Text="[TransactionCount.ToString+InvoiceNumber+Counter]">
+      <ui:TypeInto.Target>
+        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="dfb752167ea30ed56fb5633a61f78bc7" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl id='InvoiceNumber_TextBox' tag='INPUT' /&gt;">
+          <ui:Target.TimeoutMS>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:Target.TimeoutMS>
+          <ui:Target.WaitForReady>
+            <InArgument x:TypeArguments="ui:WaitForReady" />
+          </ui:Target.WaitForReady>
+        </ui:Target>
+      </ui:TypeInto.Target>
+    </ui:TypeInto>
+    <ui:LogMessage DisplayName="Enter Invoice Number Log Msg" sap:VirtualizedContainerService.HintSize="1572,91" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Enter Invoice No:&quot;+System.DateTime.Now.ToString]">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:LogMessage>
+    <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" ClickBeforeTyping="True" DisplayName="Selection Eviction Type" EmptyField="True" sap:VirtualizedContainerService.HintSize="1572,134" sap2010:WorkflowViewState.IdRef="TypeInto_3" SimulateType="True" Text="Eviction">
+      <ui:TypeInto.Target>
+        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="e40e2a8b74a2407b0cfe2af254c5d77a" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl id='ExpenseType_DropDownList' tag='SELECT' /&gt;">
+          <ui:Target.TimeoutMS>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:Target.TimeoutMS>
+          <ui:Target.WaitForReady>
+            <InArgument x:TypeArguments="ui:WaitForReady" />
+          </ui:Target.WaitForReady>
+        </ui:Target>
+      </ui:TypeInto.Target>
+    </ui:TypeInto>
+    <ui:LogMessage DisplayName="Select Eviction Type Log Msg" sap:VirtualizedContainerService.HintSize="1572,91" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Select Eviction Type: &quot;+System.DateTime.Now.ToString]">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:LogMessage>
+    <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" ClickBeforeTyping="True" DisplayName="Enter Invoice Total" EmptyField="True" sap:VirtualizedContainerService.HintSize="1572,134" sap2010:WorkflowViewState.IdRef="TypeInto_4" SimulateType="True" Text="[InvoiceTotal]">
+      <ui:TypeInto.Target>
+        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="efe0a14364dbceabb930d1339444c17d" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl id='Amount_TextBox' tag='INPUT' /&gt;">
+          <ui:Target.TimeoutMS>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:Target.TimeoutMS>
+          <ui:Target.WaitForReady>
+            <InArgument x:TypeArguments="ui:WaitForReady" />
+          </ui:Target.WaitForReady>
+        </ui:Target>
+      </ui:TypeInto.Target>
+    </ui:TypeInto>
+    <ui:LogMessage DisplayName="Enter Invoice Total Log Msg" sap:VirtualizedContainerService.HintSize="1572,91" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Enter Invoice Total: &quot;+System.DateTime.Now.ToString]">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:LogMessage>
+    <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" ClickBeforeTyping="True" DisplayName="Enter Invoice Date" EmptyField="True" sap:VirtualizedContainerService.HintSize="1572,134" sap2010:WorkflowViewState.IdRef="TypeInto_5" SimulateType="True" Text="[InvoiceDate]">
+      <ui:TypeInto.Target>
+        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="b69a5ae2d61c0ebf0b86923ba283ce8a" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl id='InvoiceDate_TextBox' tag='INPUT' /&gt;">
+          <ui:Target.TimeoutMS>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:Target.TimeoutMS>
+          <ui:Target.WaitForReady>
+            <InArgument x:TypeArguments="ui:WaitForReady" />
+          </ui:Target.WaitForReady>
+        </ui:Target>
+      </ui:TypeInto.Target>
+    </ui:TypeInto>
+    <ui:LogMessage DisplayName="Enter Invoice Date" sap:VirtualizedContainerService.HintSize="1572,91" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Enter Invoice Date: &quot;+System.DateTime.Now.ToString]">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:LogMessage>
+    <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" ClickBeforeTyping="True" DisplayName="Enter Tribeca#" EmptyField="True" sap:VirtualizedContainerService.HintSize="1572,134" sap2010:WorkflowViewState.IdRef="TypeInto_6" SimulateType="True" Text="[TribecaNumber]">
+      <ui:TypeInto.Target>
+        <ui:Target Element="{x:Null}" InformativeScreenshot="0d10ff02dc54e2279b75e965dca3253d" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl id='grdDetail_DataTable_row0_PropertyIdLookup_PropertyId' tag='INPUT' /&gt;">
+          <ui:Target.ClippingRegion>
+            <ui:Region Rectangle="4, 3, 65, 11" />
+          </ui:Target.ClippingRegion>
+          <ui:Target.TimeoutMS>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:Target.TimeoutMS>
+          <ui:Target.WaitForReady>
+            <InArgument x:TypeArguments="ui:WaitForReady" />
+          </ui:Target.WaitForReady>
+        </ui:Target>
+      </ui:TypeInto.Target>
+    </ui:TypeInto>
+    <ui:LogMessage DisplayName="Enter Tribeca Number Log Msg" sap:VirtualizedContainerService.HintSize="1572,91" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="[&quot;Enter Tribeca: &quot;+System.DateTime.Now.ToString]">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:LogMessage>
+    <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" ClickBeforeTyping="True" DisplayName="Enter Line Amount" EmptyField="True" sap:VirtualizedContainerService.HintSize="1572,134" sap2010:WorkflowViewState.IdRef="TypeInto_7" SimulateType="True" Text="[LineTotal]">
+      <ui:TypeInto.Target>
+        <ui:Target Element="{x:Null}" InformativeScreenshot="0604734adfad057820d00f714376ddf0" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl id='grdDetail_DataTable_row0_Amount' tag='INPUT' /&gt;">
+          <ui:Target.ClippingRegion>
+            <ui:Region Rectangle="4, 4, 76, 13" />
+          </ui:Target.ClippingRegion>
+          <ui:Target.TimeoutMS>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:Target.TimeoutMS>
+          <ui:Target.WaitForReady>
+            <InArgument x:TypeArguments="ui:WaitForReady" />
+          </ui:Target.WaitForReady>
+        </ui:Target>
+      </ui:TypeInto.Target>
+    </ui:TypeInto>
+    <ui:LogMessage DisplayName="Enter Line Total Log Msg" sap:VirtualizedContainerService.HintSize="1572,91" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Info" Message="[&quot;Enter Line Total: &quot;+System.DateTime.Now.ToString]">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:LogMessage>
+    <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" ClickBeforeTyping="True" DisplayName="Enter Notes" EmptyField="True" sap:VirtualizedContainerService.HintSize="1572,134" sap2010:WorkflowViewState.IdRef="TypeInto_8" SimulateType="True" Text="[TenantName+&quot;, &quot;+ServiceDate.Substring(0,10)]">
+      <ui:TypeInto.Target>
+        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="185969137722d4a13573f2e97dd8293a" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl id='grdDetail_DataTable_row0_Notes' tag='INPUT' /&gt;">
+          <ui:Target.TimeoutMS>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:Target.TimeoutMS>
+          <ui:Target.WaitForReady>
+            <InArgument x:TypeArguments="ui:WaitForReady" />
+          </ui:Target.WaitForReady>
+        </ui:Target>
+      </ui:TypeInto.Target>
+    </ui:TypeInto>
+    <ui:LogMessage DisplayName="Enter Notes" sap:VirtualizedContainerService.HintSize="1572,91" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Info" Message="[&quot;Enter Notes: &quot;+System.DateTime.Now.ToString]">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:LogMessage>
+    <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" Activate="True" ClickBeforeTyping="True" DisplayName="Enter Funding Entity" EmptyField="True" sap:VirtualizedContainerService.HintSize="1572,134" sap2010:WorkflowViewState.IdRef="TypeInto_9" SimulateType="True" Text="[FundingEntity]">
+      <ui:TypeInto.Target>
+        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="a45d849a7b107f02f58f864ccefaec33" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl id='FundingEntityId_LookupCode' tag='INPUT' /&gt;">
+          <ui:Target.TimeoutMS>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:Target.TimeoutMS>
+          <ui:Target.WaitForReady>
+            <InArgument x:TypeArguments="ui:WaitForReady" />
+          </ui:Target.WaitForReady>
+        </ui:Target>
+      </ui:TypeInto.Target>
+    </ui:TypeInto>
+    <ui:LogMessage DisplayName="Enter Funding Entity" sap:VirtualizedContainerService.HintSize="1572,91" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Info" Message="[&quot;Enter Invoice Total: &quot;+System.DateTime.Now.ToString]">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:LogMessage>
+    <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" ClickType="CLICK_SINGLE" ContinueOnError="True" DisplayName="Save" sap:VirtualizedContainerService.HintSize="1572,106" sap2010:WorkflowViewState.IdRef="Click_1" KeyModifiers="None" MouseButton="BTN_LEFT" SimulateClick="True">
+      <ui:Click.CursorPosition>
+        <ui:CursorPosition Position="Center">
+          <ui:CursorPosition.OffsetX>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:CursorPosition.OffsetX>
+          <ui:CursorPosition.OffsetY>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:CursorPosition.OffsetY>
+        </ui:CursorPosition>
+      </ui:Click.CursorPosition>
+      <ui:Click.Target>
+        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="9a43df9e48da0df87aa8ec61a8a21947" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl id='cmdSave_Button' tag='BUTTON' /&gt;" WaitForReady="NONE">
+          <ui:Target.TimeoutMS>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:Target.TimeoutMS>
+        </ui:Target>
+      </ui:Click.Target>
+    </ui:Click>
+    <ui:LogMessage DisplayName="Click Save" sap:VirtualizedContainerService.HintSize="1572,91" sap2010:WorkflowViewState.IdRef="LogMessage_10" Level="Info" Message="[&quot;Click Save: &quot;+System.DateTime.Now.ToString]">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:LogMessage>
+    <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="1572,22" sap2010:WorkflowViewState.IdRef="Delay_11" />
+    <ui:UiElementExists DisplayName="Find If Any Error Occured" Exists="[CheckError]" sap:VirtualizedContainerService.HintSize="1572,106" sap2010:WorkflowViewState.IdRef="UiElementExists_1">
+      <ui:UiElementExists.Target>
+        <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="ef492ab29a3fef791efcf967d8d82801" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl tag='B' /&gt;" WaitForReady="COMPLETE">
+          <ui:Target.TimeoutMS>
+            <InArgument x:TypeArguments="x:Int32" />
+          </ui:Target.TimeoutMS>
+        </ui:Target>
+      </ui:UiElementExists.Target>
+    </ui:UiElementExists>
+    <Assign sap:VirtualizedContainerService.HintSize="1572,60" sap2010:WorkflowViewState.IdRef="Assign_22">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[FileFrom]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">["D:\EvictionInvoices_POC\AbbyySharedPath\"+BatchID+"_"+ControlID+".pdf"]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="1572,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[&quot;TrasactionCount Value:&quot;+TransactionCount.ToString]" />
+    <If Condition="[CheckError]" sap:VirtualizedContainerService.HintSize="1572,3086" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <Sequence sap:VirtualizedContainerService.HintSize="480,2051" sap2010:WorkflowViewState.IdRef="Sequence_22">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:TakeScreenshot DisplayName="Error Screenshot" sap:VirtualizedContainerService.HintSize="438,106" sap2010:WorkflowViewState.IdRef="TakeScreenshot_1" Screenshot="[ErroScreenShot]" WaitBefore="2000">
+            <ui:TakeScreenshot.Target>
+              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="d3e9839a023155c630d9b112962f3109" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl id='Body1' tag='BODY' /&gt;">
+                <ui:Target.TimeoutMS>
+                  <InArgument x:TypeArguments="x:Int32" />
+                </ui:Target.TimeoutMS>
+                <ui:Target.WaitForReady>
+                  <InArgument x:TypeArguments="ui:WaitForReady" />
+                </ui:Target.WaitForReady>
+              </ui:Target>
+            </ui:TakeScreenshot.Target>
+          </ui:TakeScreenshot>
+          <ui:LogMessage DisplayName="Error Screenshot" sap:VirtualizedContainerService.HintSize="438,91" sap2010:WorkflowViewState.IdRef="LogMessage_11" Level="Info" Message="[&quot;Error Screnshot: &quot;+System.DateTime.Now.ToString]">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </ui:LogMessage>
+          <Assign sap:VirtualizedContainerService.HintSize="438,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[ImageName]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[TransactionCount.ToString]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign sap:VirtualizedContainerService.HintSize="438,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[FinalImagePath]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">["D:\EvictionInvoices_POC\ErrorScreenshot\"+InvoiceNumber+"_"+ImageName+".jpg"]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <ui:SaveImage ContinueOnError="True" DisplayName="Save Image" FileName="[FinalImagePath]" sap:VirtualizedContainerService.HintSize="438,92" sap2010:WorkflowViewState.IdRef="SaveImage_1" Image="[ErroScreenShot]" />
+          <ui:GetRobotAsset TimeoutMS="{x:Null}" AssetName="txtSaveErrorPath" DisplayName="Get Asset" sap:VirtualizedContainerService.HintSize="438,22" sap2010:WorkflowViewState.IdRef="GetRobotAsset_1">
+            <ui:GetRobotAsset.Value>
+              <OutArgument x:TypeArguments="x:String">[txtSaveErrorPath]</OutArgument>
+            </ui:GetRobotAsset.Value>
+          </ui:GetRobotAsset>
+          <Assign sap:VirtualizedContainerService.HintSize="438,60" sap2010:WorkflowViewState.IdRef="Assign_19">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[MoveTo]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[txtSaveErrorPath+BatchID]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438,314" sap2010:WorkflowViewState.IdRef="TryCatch_2">
+            <TryCatch.Try>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MoveFilesToSpecificFolder workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="YardiProcess\MoveFilesToSpecificFolder.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="FileToPickFrom">[FileFrom]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="CopyCSVFrom">[CopyCSVFrom]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="MoveFilePath">[MoveTo]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="CopyCSVTo">[CopyCSVTo]</InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+            </TryCatch.Try>
+            <TryCatch.Catches>
+              <Catch x:TypeArguments="s:ArgumentException" sap:VirtualizedContainerService.HintSize="404,21" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ActivityAction x:TypeArguments="s:ArgumentException">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="s:ArgumentException" Name="exception" />
+                  </ActivityAction.Argument>
+                  <Throw Exception="[new UiPath.Core.BusinessRuleException(“Wrong Process”)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
+                </ActivityAction>
+              </Catch>
+            </TryCatch.Catches>
+          </TryCatch>
+          <ui:LogMessage DisplayName="Move Files to Folder" sap:VirtualizedContainerService.HintSize="438,91" sap2010:WorkflowViewState.IdRef="LogMessage_12" Level="Info" Message="[&quot;Move Files to Folder: &quot;+System.DateTime.Now.ToString]">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </ui:LogMessage>
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Send Email workflow" sap:VirtualizedContainerService.HintSize="438,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="YardiProcess/Send Email.xaml">
+            <ui:InvokeWorkflowFile.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="EmailSubject">["Error Saving Invoice: """ +PayeeName+"""_" + InvoiceNumber]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="EmailBody" xml:space="preserve">["Hi AP Clerk,"+Environment.newline+" "+Environment.newline+
+"There has been an error occurred while saving the Invoice."+Environment.newline+" "+Environment.newline+
+"Find the attached screenshot of the error for your reference."+Environment.newline+" "+Environment.newline+
+"You can find the File here: "+MoveTo+"\"+BatchID+"_"+ControlID+".pdf"+Environment.newline+" "+Environment.newline+
+"Thanks,"+Environment.newline+
+"RPA Bot"]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="ImagePath">[FinalImagePath]</InArgument>
+            </ui:InvokeWorkflowFile.Arguments>
+          </ui:InvokeWorkflowFile>
+          <ui:LogMessage DisplayName="Send Email" sap:VirtualizedContainerService.HintSize="438,91" sap2010:WorkflowViewState.IdRef="LogMessage_13" Level="Info" Message="[&quot;Send Email: &quot;+System.DateTime.Now.ToString]">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </ui:LogMessage>
+          <ui:CloseWindow TimeoutMS="{x:Null}" UseWindow="{x:Null}" ContinueOnError="True" DisplayName="Close Window 'iexplore.exe Yardi'" sap:VirtualizedContainerService.HintSize="438,106" sap2010:WorkflowViewState.IdRef="CloseWindow_1" InformativeScreenshot="cc69c017927cd136c9f854698975ebf9" Selector="&lt;wnd app='iexplore.exe' cls='IEFrame' title='Yardi Systems, Inc. - Invoice Register - Internet Explorer' /&gt;" WaitForReady="INTERACTIVE" />
+          <ui:Click DelayBefore="{x:Null}" SendWindowMessages="{x:Null}" ClickType="CLICK_SINGLE" DelayMS="1000" DisplayName="Click 'Button'" sap:VirtualizedContainerService.HintSize="438,106" sap2010:WorkflowViewState.IdRef="Click_3" KeyModifiers="None" MouseButton="BTN_LEFT" SimulateClick="True">
+            <ui:Click.CursorPosition>
+              <ui:CursorPosition Position="Center">
+                <ui:CursorPosition.OffsetX>
+                  <InArgument x:TypeArguments="x:Int32" />
+                </ui:CursorPosition.OffsetX>
+                <ui:CursorPosition.OffsetY>
+                  <InArgument x:TypeArguments="x:Int32" />
+                </ui:CursorPosition.OffsetY>
+              </ui:CursorPosition>
+            </ui:Click.CursorPosition>
+            <ui:Click.Target>
+              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="e74d219f983d7b4b2475d63a3105d102" Selector="&lt;wnd app='iexplore.exe' cls='#32770' title='Windows Internet Explorer' /&gt;&lt;wnd aaname='Windows Internet Explorer' cls='DirectUIHWND' /&gt;&lt;wnd aaname='Leave this page' cls='Button' title='&amp;amp;Leave this page' /&gt;">
+                <ui:Target.TimeoutMS>
+                  <InArgument x:TypeArguments="x:Int32" />
+                </ui:Target.TimeoutMS>
+                <ui:Target.WaitForReady>
+                  <InArgument x:TypeArguments="ui:WaitForReady" />
+                </ui:Target.WaitForReady>
+              </ui:Target>
+            </ui:Click.Target>
+          </ui:Click>
+          <ui:LogMessage DisplayName="Close the IE Window" sap:VirtualizedContainerService.HintSize="438,91" sap2010:WorkflowViewState.IdRef="LogMessage_14" Level="Info" Message="[&quot;Close IE Window: &quot;+System.DateTime.Now.ToString]">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </ui:LogMessage>
+          <Throw Exception="[new UiPath.Core.BusinessRuleException(“Wrong Process”)]" sap:VirtualizedContainerService.HintSize="438,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <Sequence sap:VirtualizedContainerService.HintSize="1047,2938" sap2010:WorkflowViewState.IdRef="Sequence_23">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" SendWindowMessages="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click on Validate" sap:VirtualizedContainerService.HintSize="1005,106" sap2010:WorkflowViewState.IdRef="Click_4" KeyModifiers="None" MouseButton="BTN_LEFT" SimulateClick="True">
+            <ui:Click.CursorPosition>
+              <ui:CursorPosition Position="Center">
+                <ui:CursorPosition.OffsetX>
+                  <InArgument x:TypeArguments="x:Int32" />
+                </ui:CursorPosition.OffsetX>
+                <ui:CursorPosition.OffsetY>
+                  <InArgument x:TypeArguments="x:Int32" />
+                </ui:CursorPosition.OffsetY>
+              </ui:CursorPosition>
+            </ui:Click.CursorPosition>
+            <ui:Click.Target>
+              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="e8129ebca818195b5de9ab331f78725a" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl id='cmdValidate_Button' tag='BUTTON' /&gt;" WaitForReady="NONE">
+                <ui:Target.TimeoutMS>
+                  <InArgument x:TypeArguments="x:Int32" />
+                </ui:Target.TimeoutMS>
+              </ui:Target>
+            </ui:Click.Target>
+          </ui:Click>
+          <ui:LogMessage DisplayName="Click Validate" sap:VirtualizedContainerService.HintSize="1005,91" sap2010:WorkflowViewState.IdRef="LogMessage_15" Level="Info" Message="[&quot;Click Validate: &quot;+System.DateTime.Now.ToString]">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </ui:LogMessage>
+          <Delay Duration="00:00:03" sap:VirtualizedContainerService.HintSize="1005,22" sap2010:WorkflowViewState.IdRef="Delay_13" />
+          <ui:UiElementExists DisplayName="If Payable is Valid received" Exists="[ValidateError]" sap:VirtualizedContainerService.HintSize="1005,106" sap2010:WorkflowViewState.IdRef="UiElementExists_2">
+            <ui:UiElementExists.Target>
+              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="08b487f634e4b5e1e5720c7401a2b420" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl parentid='MessageTableContainer' tag='TABLE' /&gt;&lt;webctrl tableCol='2' tag='TD' /&gt;">
+                <ui:Target.TimeoutMS>
+                  <InArgument x:TypeArguments="x:Int32" />
+                </ui:Target.TimeoutMS>
+                <ui:Target.WaitForReady>
+                  <InArgument x:TypeArguments="ui:WaitForReady" />
+                </ui:Target.WaitForReady>
+              </ui:Target>
+            </ui:UiElementExists.Target>
+          </ui:UiElementExists>
+          <If Condition="[ValidateError]" sap:VirtualizedContainerService.HintSize="1005,2361" sap2010:WorkflowViewState.IdRef="If_2">
+            <If.Then>
+              <Sequence DisplayName="Succes Sequence" sap:VirtualizedContainerService.HintSize="480,2213" sap2010:WorkflowViewState.IdRef="Sequence_24">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ui:TakeScreenshot WaitBefore="{x:Null}" DisplayName="Success Screenshot" sap:VirtualizedContainerService.HintSize="438,106" sap2010:WorkflowViewState.IdRef="TakeScreenshot_3" Screenshot="[SuccessScreenShot]">
+                  <ui:TakeScreenshot.Target>
+                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="0760870d021041deeacc5864eeda3d37" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl id='PageTable' tag='TABLE' /&gt;">
+                      <ui:Target.TimeoutMS>
+                        <InArgument x:TypeArguments="x:Int32" />
+                      </ui:Target.TimeoutMS>
+                      <ui:Target.WaitForReady>
+                        <InArgument x:TypeArguments="ui:WaitForReady" />
+                      </ui:Target.WaitForReady>
+                    </ui:Target>
+                  </ui:TakeScreenshot.Target>
+                </ui:TakeScreenshot>
+                <ui:LogMessage DisplayName="Success Screenshot" sap:VirtualizedContainerService.HintSize="438,91" sap2010:WorkflowViewState.IdRef="LogMessage_23" Level="Info" Message="[&quot;Success Screnshot: &quot;+System.DateTime.Now.ToString]">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:LogMessage>
+                <Assign sap:VirtualizedContainerService.HintSize="438,60" sap2010:WorkflowViewState.IdRef="Assign_9">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[ImageName]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">[TransactionCount.ToString]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap:VirtualizedContainerService.HintSize="438,60" sap2010:WorkflowViewState.IdRef="Assign_10">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[FinalImagePath]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">["D:\EvictionInvoices_POC\ErrorScreenshot\"+InvoiceNumber+"_"+ImageName+".jpg"]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <ui:SaveImage ContinueOnError="True" DisplayName="Save Image" FileName="[FinalImagePath]" sap:VirtualizedContainerService.HintSize="438,92" sap2010:WorkflowViewState.IdRef="SaveImage_4" Image="[SuccessScreenShot]" />
+                <ui:GetRobotAsset TimeoutMS="{x:Null}" AssetName="txtSuccessPath" DisplayName="Get Asset" sap:VirtualizedContainerService.HintSize="438,22" sap2010:WorkflowViewState.IdRef="GetRobotAsset_2">
+                  <ui:GetRobotAsset.Value>
+                    <OutArgument x:TypeArguments="x:String">[txtSuccessPath]</OutArgument>
+                  </ui:GetRobotAsset.Value>
+                </ui:GetRobotAsset>
+                <Assign sap:VirtualizedContainerService.HintSize="438,60" sap2010:WorkflowViewState.IdRef="Assign_14">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[MoveTo]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">[txtSuccessPath+BatchID]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap:VirtualizedContainerService.HintSize="438,60" sap2010:WorkflowViewState.IdRef="Assign_16">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[CopyCSVFrom]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">["\\Aw2-abydevapp01\abbyy\ABBYY_Eviction Invoices\EvictionInvoicePoC_Export\"+BatchID+"_"+ControlID+".csv"]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="438,230" sap2010:WorkflowViewState.IdRef="CommentOut_2">
+                  <ui:CommentOut.Body>
+                    <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="304,152" sap2010:WorkflowViewState.IdRef="Sequence_26">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_17">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:String">[CopyCSVTo]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:String">["D:\EvictionInvoices_POC\ProcessedFiles\Success\"+BatchID+"_"+ControlID+".csv"]</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                    </Sequence>
+                  </ui:CommentOut.Body>
+                </ui:CommentOut>
+                <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438,314" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+                  <TryCatch.Try>
+                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MoveFilesToSpecificFolder workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="YardiProcess\MoveFilesToSpecificFolder.xaml">
+                      <ui:InvokeWorkflowFile.Arguments>
+                        <InArgument x:TypeArguments="x:String" x:Key="FileToPickFrom">[FileFrom]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="CopyCSVFrom">[CopyCSVFrom]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="MoveFilePath">[MoveTo]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="CopyCSVTo">[CopyCSVTo]</InArgument>
+                      </ui:InvokeWorkflowFile.Arguments>
+                    </ui:InvokeWorkflowFile>
+                  </TryCatch.Try>
+                  <TryCatch.Catches>
+                    <Catch x:TypeArguments="s:ArgumentException" sap:VirtualizedContainerService.HintSize="404,21" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ActivityAction x:TypeArguments="s:ArgumentException">
+                        <ActivityAction.Argument>
+                          <DelegateInArgument x:TypeArguments="s:ArgumentException" Name="exception" />
+                        </ActivityAction.Argument>
+                        <Throw Exception="[new UiPath.Core.BusinessRuleException(“Wrong Process”)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
+                      </ActivityAction>
+                    </Catch>
+                  </TryCatch.Catches>
+                </TryCatch>
+                <ui:LogMessage DisplayName="Move Files to Folder" sap:VirtualizedContainerService.HintSize="438,91" sap2010:WorkflowViewState.IdRef="LogMessage_24" Level="Info" Message="[&quot;Move Files to Folder: &quot;+System.DateTime.Now.ToString]">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:LogMessage>
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Send Email workflow" sap:VirtualizedContainerService.HintSize="438,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="YardiProcess/Send Email.xaml">
+                  <ui:InvokeWorkflowFile.Arguments>
+                    <InArgument x:TypeArguments="x:String" x:Key="EmailSubject">["Invoice Saved Successfully: """+PayeeName+"""_Invoice: " + InvoiceNumber]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="EmailBody" xml:space="preserve">["Hi AP Clerk,"+Environment.newline+" "+Environment.newline+
+"There has been an error occurred while saving the Invoice."+Environment.newline+" "+Environment.newline+
+"Find the attached screenshot of the error for your reference."+Environment.newline+" "+Environment.newline+
+"You can find the File here: "+MoveTo+"\"+BatchID+"_"+ControlID+".pdf"+Environment.newline+" "+Environment.newline+
+"Thanks,"+Environment.newline+
+"RPA Bot :)"]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="ImagePath">[FinalImagePath]</InArgument>
+                  </ui:InvokeWorkflowFile.Arguments>
+                </ui:InvokeWorkflowFile>
+                <ui:LogMessage DisplayName="Send Email" sap:VirtualizedContainerService.HintSize="438,91" sap2010:WorkflowViewState.IdRef="LogMessage_25" Level="Info" Message="[&quot;Send Email: &quot;+System.DateTime.Now.ToString]">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:LogMessage>
+                <ui:CloseWindow TimeoutMS="{x:Null}" UseWindow="{x:Null}" ContinueOnError="True" DisplayName="Close Window 'iexplore.exe Yardi'" sap:VirtualizedContainerService.HintSize="438,106" sap2010:WorkflowViewState.IdRef="CloseWindow_4" InformativeScreenshot="cc69c017927cd136c9f854698975ebf9" Selector="&lt;wnd app='iexplore.exe' cls='IEFrame' title='Yardi Systems, Inc. - Invoice Register - Internet Explorer' /&gt;" WaitForReady="INTERACTIVE" />
+                <ui:LogMessage DisplayName="Close the IE Window" sap:VirtualizedContainerService.HintSize="438,91" sap2010:WorkflowViewState.IdRef="LogMessage_26" Level="Info" Message="[&quot;Close IE Window: &quot;+System.DateTime.Now.ToString]">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:LogMessage>
+              </Sequence>
+            </If.Then>
+            <If.Else>
+              <Sequence sap:VirtualizedContainerService.HintSize="480,2051" sap2010:WorkflowViewState.IdRef="Sequence_25">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ui:TakeScreenshot DisplayName="Error Screenshot" sap:VirtualizedContainerService.HintSize="438,106" sap2010:WorkflowViewState.IdRef="TakeScreenshot_4" Screenshot="[ErroScreenShot]" WaitBefore="2000">
+                  <ui:TakeScreenshot.Target>
+                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="d3e9839a023155c630d9b112962f3109" Selector="&lt;html title='Yardi Systems, Inc. - Invoice Register' /&gt;&lt;webctrl id='Body1' tag='BODY' /&gt;">
+                      <ui:Target.TimeoutMS>
+                        <InArgument x:TypeArguments="x:Int32" />
+                      </ui:Target.TimeoutMS>
+                      <ui:Target.WaitForReady>
+                        <InArgument x:TypeArguments="ui:WaitForReady" />
+                      </ui:Target.WaitForReady>
+                    </ui:Target>
+                  </ui:TakeScreenshot.Target>
+                </ui:TakeScreenshot>
+                <ui:LogMessage DisplayName="Error Screenshot" sap:VirtualizedContainerService.HintSize="438,91" sap2010:WorkflowViewState.IdRef="LogMessage_27" Level="Info" Message="[&quot;Error Screnshot: &quot;+System.DateTime.Now.ToString]">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:LogMessage>
+                <Assign sap:VirtualizedContainerService.HintSize="438,60" sap2010:WorkflowViewState.IdRef="Assign_11">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[ImageName]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">[TransactionCount.ToString]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign sap:VirtualizedContainerService.HintSize="438,60" sap2010:WorkflowViewState.IdRef="Assign_12">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[FinalImagePath]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">["D:\EvictionInvoices_POC\ErrorScreenshot\"+InvoiceNumber+"_"+ImageName+".jpg"]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <ui:SaveImage ContinueOnError="True" DisplayName="Save Image" FileName="[FinalImagePath]" sap:VirtualizedContainerService.HintSize="438,92" sap2010:WorkflowViewState.IdRef="SaveImage_5" Image="[ErroScreenShot]" />
+                <ui:GetRobotAsset TimeoutMS="{x:Null}" AssetName="txtValidateErrorPath" DisplayName="Get Asset" sap:VirtualizedContainerService.HintSize="438,22" sap2010:WorkflowViewState.IdRef="GetRobotAsset_3">
+                  <ui:GetRobotAsset.Value>
+                    <OutArgument x:TypeArguments="x:String">[txtValidateErrorPath]</OutArgument>
+                  </ui:GetRobotAsset.Value>
+                </ui:GetRobotAsset>
+                <Assign sap:VirtualizedContainerService.HintSize="438,60" sap2010:WorkflowViewState.IdRef="Assign_21">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[MoveTo]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">[txtValidateErrorPath+BatchID]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438,314" sap2010:WorkflowViewState.IdRef="TryCatch_3">
+                  <TryCatch.Try>
+                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MoveFilesToSpecificFolder workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="YardiProcess\MoveFilesToSpecificFolder.xaml">
+                      <ui:InvokeWorkflowFile.Arguments>
+                        <InArgument x:TypeArguments="x:String" x:Key="FileToPickFrom">[FileFrom]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="CopyCSVFrom">[CopyCSVFrom]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="MoveFilePath">[MoveTo]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="CopyCSVTo">[CopyCSVTo]</InArgument>
+                      </ui:InvokeWorkflowFile.Arguments>
+                    </ui:InvokeWorkflowFile>
+                  </TryCatch.Try>
+                  <TryCatch.Catches>
+                    <Catch x:TypeArguments="s:ArgumentException" sap:VirtualizedContainerService.HintSize="404,21" sap2010:WorkflowViewState.IdRef="Catch`1_3">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ActivityAction x:TypeArguments="s:ArgumentException">
+                        <ActivityAction.Argument>
+                          <DelegateInArgument x:TypeArguments="s:ArgumentException" Name="exception" />
+                        </ActivityAction.Argument>
+                        <Throw Exception="[new UiPath.Core.BusinessRuleException(“Wrong Process”)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_5" />
+                      </ActivityAction>
+                    </Catch>
+                  </TryCatch.Catches>
+                </TryCatch>
+                <ui:LogMessage DisplayName="Move Files to Folder" sap:VirtualizedContainerService.HintSize="438,91" sap2010:WorkflowViewState.IdRef="LogMessage_28" Level="Info" Message="[&quot;Move Files to Folder: &quot;+System.DateTime.Now.ToString]">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:LogMessage>
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Send Email workflow" sap:VirtualizedContainerService.HintSize="438,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="YardiProcess/Send Email.xaml">
+                  <ui:InvokeWorkflowFile.Arguments>
+                    <InArgument x:TypeArguments="x:String" x:Key="EmailSubject">["Error Saving Invoice: """ +PayeeName+"""_" + InvoiceNumber]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="EmailBody" xml:space="preserve">["Hi AP Clerk,"+Environment.newline+" "+Environment.newline+
+"There has been an error occurred while saving the Invoice."+Environment.newline+" "+Environment.newline+
+"Find the attached screenshot of the error for your reference."+Environment.newline+" "+Environment.newline+
+"You can find the File here: "+MoveTo+"\"+BatchID+"_"+ControlID+".pdf"+Environment.newline+" "+Environment.newline+
+"Thanks,"+Environment.newline+
+"RPA Bot"]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="ImagePath">[FinalImagePath]</InArgument>
+                  </ui:InvokeWorkflowFile.Arguments>
+                </ui:InvokeWorkflowFile>
+                <ui:LogMessage DisplayName="Send Email" sap:VirtualizedContainerService.HintSize="438,91" sap2010:WorkflowViewState.IdRef="LogMessage_29" Level="Info" Message="[&quot;Send Email: &quot;+System.DateTime.Now.ToString]">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:LogMessage>
+                <ui:CloseWindow TimeoutMS="{x:Null}" UseWindow="{x:Null}" ContinueOnError="True" DisplayName="Close Window 'iexplore.exe Yardi'" sap:VirtualizedContainerService.HintSize="438,106" sap2010:WorkflowViewState.IdRef="CloseWindow_5" InformativeScreenshot="cc69c017927cd136c9f854698975ebf9" Selector="&lt;wnd app='iexplore.exe' cls='IEFrame' title='Yardi Systems, Inc. - Invoice Register - Internet Explorer' /&gt;" WaitForReady="INTERACTIVE" />
+                <ui:Click DelayBefore="{x:Null}" SendWindowMessages="{x:Null}" ClickType="CLICK_SINGLE" DelayMS="2000" DisplayName="Click 'Button'" sap:VirtualizedContainerService.HintSize="438,106" sap2010:WorkflowViewState.IdRef="Click_5" KeyModifiers="None" MouseButton="BTN_LEFT" SimulateClick="True">
+                  <ui:Click.CursorPosition>
+                    <ui:CursorPosition Position="Center">
+                      <ui:CursorPosition.OffsetX>
+                        <InArgument x:TypeArguments="x:Int32" />
+                      </ui:CursorPosition.OffsetX>
+                      <ui:CursorPosition.OffsetY>
+                        <InArgument x:TypeArguments="x:Int32" />
+                      </ui:CursorPosition.OffsetY>
+                    </ui:CursorPosition>
+                  </ui:Click.CursorPosition>
+                  <ui:Click.Target>
+                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" InformativeScreenshot="e74d219f983d7b4b2475d63a3105d102" Selector="&lt;wnd app='iexplore.exe' cls='#32770' title='Windows Internet Explorer' /&gt;&lt;wnd aaname='Windows Internet Explorer' cls='DirectUIHWND' /&gt;&lt;wnd aaname='Leave this page' cls='Button' title='&amp;amp;Leave this page' /&gt;">
+                      <ui:Target.TimeoutMS>
+                        <InArgument x:TypeArguments="x:Int32" />
+                      </ui:Target.TimeoutMS>
+                      <ui:Target.WaitForReady>
+                        <InArgument x:TypeArguments="ui:WaitForReady" />
+                      </ui:Target.WaitForReady>
+                    </ui:Target>
+                  </ui:Click.Target>
+                </ui:Click>
+                <ui:LogMessage DisplayName="Close the IE Window" sap:VirtualizedContainerService.HintSize="438,91" sap2010:WorkflowViewState.IdRef="LogMessage_30" Level="Info" Message="[&quot;Close IE Window: &quot;+System.DateTime.Now.ToString]">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:LogMessage>
+                <Throw Exception="[new UiPath.Core.BusinessRuleException(“Wrong Process”)]" sap:VirtualizedContainerService.HintSize="438,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
+              </Sequence>
+            </If.Else>
+          </If>
+        </Sequence>
+      </If.Else>
+    </If>
+  </Sequence>
+</Activity>
